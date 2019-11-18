@@ -1,0 +1,67 @@
+<!Doctype HTML>
+<html 
+	xmlns = "http://www.w3.org/1999/xhtml"
+	xmlns:th = "http://www.thymeleaf.org"
+	xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<head>
+		<meta charset = UTF-8/>
+		<link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" rel = "stylesheet" />
+	</head>
+	<body>
+		<div th:insert="~{Menu :: menu}"></div>		
+		
+		<div class = "card" style = "margin: 10px">
+			<div class = "card-header">
+				<h1 class = "card-title">Lista de Carros Cadastrados</h1>
+			</div>
+			
+			<div class = "card-body">
+				<form class="form-inline" method="POST" th:object="${carro}" th:action="@{/carros}" style="margin: 20px 0">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Placa" th:field="*{placa}"/>
+						<button type="submit" class="btn btn-primary">Salvar</button>
+					</div>
+				</form>
+				
+				<table class = "table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Placa</th>
+							<th>Editar</th>
+							<th sec:authorize="hasRole('ADMIN')">Excluir Direto</th>
+							<th>Excluir</th>
+							<th>Multas</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each = "carro : ${carros}">
+							<td th:text="${carro.id}"/>
+							<td th:text="${carro.placa}"/>
+							<td>
+								<a class="btn btn-primary" th:href="@{/carros/{id} (id=${carro.id})}">
+									Editar
+								</a>
+							</td>
+							<td sec:authorize="hasRole('ADMIN')">
+								<a class="btn btn-danger" th:href="@{/carros/deletar/{id} (id=${carro.id})}">
+									Excluir Direto
+								</a>
+							</td>
+							<td>
+								<a class="btn btn-warning" th:href="@{/carros/deletar/confirmacao/{id} (id=${carro.id})}">
+									Excluir
+								</a>
+							</td>
+							<td>
+								<a class="btn btn-success" th:href="@{/carros/verificar/{id} (id=${carro.id})}">
+									Verificar
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

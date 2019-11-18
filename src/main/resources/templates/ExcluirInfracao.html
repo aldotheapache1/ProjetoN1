@@ -1,0 +1,32 @@
+<!Doctype HTML>
+<html 
+	xmlns = "http://www.w3.org/1999/xhtml"
+	xmlns:th = "http://www.thymeleaf.org">
+	<head>
+		<meta charset = UTF-8/>
+		<link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" rel = "stylesheet" />
+	</head>
+	<body>
+		<div class = "card" style = "margin: 10px">
+			<div class = "card-header">
+				<h1 class = "card-title">Excluir Infração</h1>
+			</div>
+			
+			<div class = "card-body">
+				<div class="alert alert-warning">
+					Deseja realmente excluir a infração?
+				</div>
+				<form class="form-inline" method="DELETE" th:object="${infracao}" th:action="@{/infracoes/deletar/{id} (id=${infracao.id})}" 
+					style="margin: 20px 0">
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Sim</button>
+						&nbsp;
+						<a th:href="@{/infracoes}">
+							<button type="button" class="btn btn-danger">Não</button>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

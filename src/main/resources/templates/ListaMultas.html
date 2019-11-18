@@ -1,0 +1,73 @@
+<!Doctype HTML>
+<html 
+	xmlns = "http://www.w3.org/1999/xhtml"
+	xmlns:th = "http://www.thymeleaf.org"
+	xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<head>
+		<meta charset = UTF-8/>
+		<link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" rel = "stylesheet" />
+	</head>
+	<body>
+		<div th:insert="~{Menu :: menu}"></div>		
+		
+		<div class = "card" style = "margin: 10px">
+			<div class = "card-header">
+				<h1 class = "card-title">Lista de Multas Cadastradas</h1>
+			</div>
+			
+			<div class = "card-body">
+				<form class="form-inline" method="POST" th:object="${multa}" th:action="@{/multas}" style="margin: 20px 0">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Placa do Carro" th:field="*{carro.placa}"/>
+						<input type="text" class="form-control" placeholder="Ano" th:field="*{ano}"/>
+						<input type="text" class="form-control" placeholder="Cidade" th:field="*{cidade}"/>
+						
+						<select class="form-control" th:field="*{tipoInfracao.id}">
+							<option th:each="infracao : ${infracoes}" th:value="${infracao.id}" th:text="${infracao.descricao}"></option>
+						</select>
+						<button type="submit" class="btn btn-primary">Salvar</button>
+					</div>
+				</form>
+				
+				<table class = "table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Placa do carro</th>
+							<th>Tipo Infração</th>
+							<th>Ano</th>
+							<th>Cidade</th>
+							<th>Editar</th>
+							<th sec:authorize="hasRole('ADMIN')">Excluir Direto</th>
+							<th>Excluir</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each = "multa : ${multas}">
+							<td th:text="${multa.id}"/>
+							<td th:text="${multa.carro.placa}">r</td>
+							<td th:text="${multa.tipoInfracao.descricao}"></td>
+							<td th:text="${multa.ano}"/>
+							<td th:text="${multa.cidade}"/>
+							<td>
+								<a class="btn btn-primary" th:href="@{/multas/{id} (id=${multa.id})}">
+									Editar
+								</a>
+							</td>
+							<td sec:authorize="hasRole('ADMIN')">
+								<a class="btn btn-danger" th:href="@{/multas/deletar/{id} (id=${multa.id})}">
+									Excluir Direto
+								</a>
+							</td>
+							<td>
+								<a class="btn btn-warning" th:href="@{/multas/deletar/confirmacao/{id} (id=${multa.id})}">
+									Excluir
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<!Doctype HTML>
+<html 
+	xmlns = "http://www.w3.org/1999/xhtml"
+	xmlns:th = "http://www.thymeleaf.org"
+	xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<head>
+		<meta charset = UTF-8/>
+		<link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" rel = "stylesheet" />
+	</head>
+	<body>
+		<div th:insert="~{Menu :: menu}"></div>
+		<div class = "card" style = "margin: 10px">
+			<div class = "card-header">
+				<h1 class = "card-title">Verificar carro - <span class="badge badge-warning" th:text="${carro.placa}"></span></h1>
+			</div>
+			<div class = "card-body">
+				<table class = "table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Ano</th>
+							<th>Cidade</th>
+							<th>Infração</th>
+							<th>Pontos</th>
+							<th>Valor</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each = "multa : ${carro.getMultas()}">
+							<td th:text="${multa.id}"/>
+							<td th:text="${multa.ano}"/>
+							<td th:text="${multa.cidade}"/>
+							<td th:text="${multa.tipoInfracao.descricao}"></td>
+							<td th:text="${multa.tipoInfracao.pontos}"></td>
+							<td th:text="${multa.tipoInfracao.valor}"></td>
+						</tr>
+					</tbody>
+					<tfooter>
+						<tr>
+							<td/>
+							<td/>
+							<td/>
+							<td th:if="${carro.getMultas().size() > 0}"><b style="color:red;">TOTAL ACUMULADO:</b></td>
+							<td th:if="${carro.getMultas().size() > 0}"><b th:text="${totalPontos}" style="color:red;"></b></td>
+							<td th:if="${carro.getMultas().size() > 0}"><b th:text="${valorTotal}" style="color:red;"></b></td>
+						</tr>
+					</tfooter>
+				</table>
+				<div class="container col-xs-12 col-sm-6 col-md-6 col-lg-3" th:if="${carro.getMultas().size() == 0}">
+					<b style="color:red;">Nenhuma multa foi encontrada para este carro!</b>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

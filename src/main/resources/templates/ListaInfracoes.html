@@ -1,0 +1,67 @@
+<!Doctype HTML>
+<html 
+	xmlns = "http://www.w3.org/1999/xhtml"
+	xmlns:th = "http://www.thymeleaf.org"
+	xmlns:sec = "https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	<head>
+		<meta charset = UTF-8/>
+		<link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" rel = "stylesheet" />
+	</head>
+	<body>
+		<div th:insert="~{Menu :: menu}"></div>		
+		
+		<div class = "card" style = "margin: 10px">
+			<div class = "card-header">
+				<h1 class = "card-title">Lista de Infrações Cadastradas</h1>
+			</div>
+			
+			<div class = "card-body">
+				<form class="form-inline" method="POST" th:object="${infracao}" th:action="@{/infracoes}" style="margin: 20px 0">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Descrição" th:field="*{descricao}"/>
+						<input type="text" class="form-control" placeholder="Valor" th:field="*{valor}"/>
+						<input type="text" class="form-control" placeholder="Pontos" th:field="*{pontos}"/>
+						<button type="submit" class="btn btn-primary">Salvar</button>
+					</div>
+				</form>
+				
+				<table class = "table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Descricao</th>
+							<th>Pontos</th>
+							<th>Valor</th>
+							<th>Editar</th>
+							<th sec:authorize="hasRole('ADMIN')">Excluir Direto</th>
+							<th>Excluir</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each = "infracao : ${infracoes}">
+							<td th:text="${infracao.id}"/>
+							<td th:text="${infracao.descricao}"/>
+							<td th:text="${infracao.pontos}"/>
+							<td th:text="${'R$ ' + infracao.valor}"/>
+							<td>
+								<a class="btn btn-primary" th:href="@{/infracoes/{id} (id=${infracao.id})}">
+									Editar
+								</a>
+							</td>
+							<td sec:authorize="hasRole('ADMIN')">
+								<a class="btn btn-danger" th:href="@{/infracoes/deletar/{id} (id=${infracao.id})}">
+									Excluir Direto
+								</a>
+							</td>
+							<td>
+								<a class="btn btn-warning" th:href="@{/infracoes/deletar/confirmacao/{id} (id=${infracao.id})}">
+									Excluir
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
