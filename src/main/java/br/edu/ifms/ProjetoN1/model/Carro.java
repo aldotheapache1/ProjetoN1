@@ -27,7 +27,7 @@ public class Carro implements Serializable{
 	private String placa;
 	
 	@OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
-	@JsonBackReference
+
 	private List<Multa> multas = new ArrayList<>();
 	
 	public Long getId() {

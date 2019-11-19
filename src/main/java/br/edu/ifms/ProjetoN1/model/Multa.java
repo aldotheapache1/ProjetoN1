@@ -23,7 +23,7 @@ public class Multa implements Serializable{
 	
 	@ManyToOne
     @JoinColumn(name = "carro_id")
-
+	@JsonBackReference
 	private Carro carro;
 	
 	@ManyToOne

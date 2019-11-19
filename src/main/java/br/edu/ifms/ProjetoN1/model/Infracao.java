@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.CascadeType;
 
 @Entity
@@ -19,7 +22,7 @@ public class Infracao implements Serializable{
 	private String descricao;
 	private int pontos;
 	private double valor;
-	
+	@JsonBackReference
 	@OneToMany(mappedBy = "tipoInfracao", cascade = CascadeType.ALL)
 	private List<Multa> multas = new ArrayList<>();
 	
